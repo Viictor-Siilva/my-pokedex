@@ -4,10 +4,11 @@ Aplicativo mobile em React Native com Expo, usado em aulas práticas de desenvol
 
 Atualmente o projeto contém:
 
-- **Tela de Login** (`LoginScreen`)
-- **Tela de Listagem de Pokémon** (`PokemonListScreen`) com dados mockados
-- **Tela de Detalhe de Pokémon** (`PokemonDetailScreen`) com dados mockados
-- **Serviço de API** (`pokeapi.ts`) já estruturado para consumir a [PokéAPI](https://pokeapi.co)
+- **Tela de Login** (`src/pages/Login`)
+- **Tela de Listagem de Pokémon** (`src/pages/PokemonList`) com dados mockados
+- **Tela de Detalhe de Pokémon** (`src/pages/PokemonDetail`) com dados mockados
+- **Serviço de API** (`src/services/pokeapi.ts`) já estruturado para consumir a [PokéAPI](https://pokeapi.co)
+- **Sistema de temas** (`src/global/themes.tsx`) com paleta inspirada na Pokédex e suporte a modo claro/escuro
 
 > Atenção: neste momento as telas ainda **não estão conectadas entre si** (sem navegação) e os dados mostrados são estáticos. A integração com a API será feita nas aulas.
 
@@ -80,14 +81,24 @@ Opcional (para emuladores):
 
 ```text
 my-pokedex/
-  App.tsx          # Ponto de entrada, hoje exibindo a tela de Login
+  App.tsx                  # Ponto de entrada, hoje exibindo a tela de Login
   src/
-    screens/
-      LoginScreen.tsx          # Tela de login
-      PokemonListScreen.tsx    # Tela de listagem (mock)
-      PokemonDetailScreen.tsx  # Tela de detalhes (mock)
+    global/
+      themes.tsx           # Definição de temas (claro/escuro) no padrão Pokédex
+    pages/
+      Login/
+        index.tsx          # Página de login
+        styles.ts          # Estilos da página de login
+      PokemonList/
+        index.tsx          # Página de listagem (mock)
+        styles.ts          # Estilos da página de listagem
+      PokemonDetail/
+        index.tsx          # Página de detalhes (mock)
+        styles.ts          # Estilos da página de detalhes
     services/
-      pokeapi.ts               # Funções para consumir a PokéAPI (ainda não usadas nas telas)
+      pokeapi.ts           # Funções para consumir a PokéAPI (ainda não usadas nas páginas)
+    @types/
+      png.d.ts             # Tipagem para import de imagens PNG
 ```
 
 ---
