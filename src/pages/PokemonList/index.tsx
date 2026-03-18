@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import React, {use, useEffect, useState} from 'react';
+import { View, Text, FlatList, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { createStyles } from './styles';
 import { useTheme } from '../../global/themes';
 import { useNavigation } from '@react-navigation/native';
@@ -23,6 +23,29 @@ export default function PokemonListScreen() {
   const theme = useTheme();
   const styles = createStyles(theme);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'PokemonList'>>();
+
+  const [pokemons, setPokemons] = useState<PokemonListItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setError(null);
+    
+    const timer = setTimeout(() => {
+      try {
+        setPokemons(MOCK_POKEMON_LIST);
+      } catch (e) {
+        setError('Falha ao carregar lista de pokémons!');
+      } finally {
+        setIsLoading(false);
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   const handleLogout = () => {
     // Redireciona para Login e impede voltar
@@ -51,7 +74,21 @@ export default function PokemonListScreen() {
       <Image source={{ uri: item.imageUrl }} style={styles.cardImage} />
     </TouchableOpacity>
   );
-
+  if (isLoading) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={{ marginTop: 16, color: theme.colors.text }}>Carregando lista (simulado)...</Text>
+      </View>
+    );
+  }
+  if (error) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{ color: theme.colors.text, marginBottom: 16 }}>{error}</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       {/* CONTAINER DO TOPO: TÍTULO + LOGOUT */}
@@ -61,7 +98,7 @@ export default function PokemonListScreen() {
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
-
+      
       <FlatList
         data={MOCK_POKEMON_LIST}
         keyExtractor={(item) => String(item.id)}
