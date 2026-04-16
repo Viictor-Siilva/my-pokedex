@@ -12,6 +12,7 @@ export const createStyles = (theme: Theme) =>
     },
     overlay: {
       position: 'absolute',
+      
       left: 16,
       right: 16,
       bottom: 24,
